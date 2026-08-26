@@ -4,3 +4,7 @@ venv/
 instance/
 .pytest_cache/
 *.pyc
+README.MD
+tests/
+.env.docker
+.git/

@@ -6,12 +6,12 @@ services:
     env_file:
       - .env.docker
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
 
     volumes:
       - .:/app
-  db:
+  mysql:
     image: mysql:8.0
     env_file:
       - .env.docker

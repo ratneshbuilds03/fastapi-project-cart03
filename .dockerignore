@@ -7,4 +7,5 @@ instance/
 README.MD
 tests/
 .env.docker
+.env
 .git/

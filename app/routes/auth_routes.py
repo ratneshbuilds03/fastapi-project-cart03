@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status,Request
-from fastapi.security import OAuth2PasswordRequestForm
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Form, HTTPException, status,Request
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.services.auth_services import signup_user, login_user
-from app.schemas.user import UserCreate, UserResponse, Token
+from app.schemas.user import UserCreate, UserLogin, UserResponse, Token
 from app.utils.rate_limiter import limiter
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
@@ -20,10 +21,10 @@ def signup(user: UserCreate, request:Request, db: Session = Depends(get_db) ):
 @limiter.limit("3/minute")
 def login(
     request:Request,
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    credentials: Annotated[UserLogin, Form()],
     db: Session = Depends(get_db)
 ):
-    token, error = login_user(db, form_data.username, form_data.password)
+    token, error = login_user(db, credentials.email, credentials.password)
     if error:
         raise HTTPException(status_code=401, detail=error)
     return {"access_token": token, "token_type": "bearer"}

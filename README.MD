@@ -1,12 +1,12 @@
-# Cart System Backend 🛒
+# Cartify Backend 🛒
 
-A placement-ready e-commerce backend built with **FastAPI, MySQL, MongoDB, Docker, and JWT authentication**.
+A production-style e-commerce backend built with **FastAPI**, **MySQL**, **MongoDB**, **JWT authentication**, and **Docker**.
 
-The backend provides REST APIs for user authentication, product management, shopping cart operations, and order placement. It uses a dual-database architecture to handle relational and document-oriented application data.
+The backend provides authentication, product management, cart management, checkout, and order functionality for the Cartify frontend.
 
 ## 🚀 Live API
 
-**Backend API:**
+**Backend:**
 https://cart-system-ylj0.onrender.com
 
 **Swagger / OpenAPI Documentation:**
@@ -15,46 +15,53 @@ https://cart-system-ylj0.onrender.com/docs
 **Frontend:**
 https://cartify-pi-nine.vercel.app/
 
+---
+
 ## ✨ Features
 
 * User registration and login
 * JWT-based authentication
-* Password validation and authentication
-* Product catalog APIs
-* Product creation and updates
-* Product images
+* Protected API endpoints
+* Product management
+* Product image support
+* MongoDB product storage
 * Shopping cart management
 * Checkout and order placement
-* MySQL database integration
-* MongoDB database integration
-* Pydantic request/response validation
-* CORS configuration for frontend integration
+* MySQL user and order data
+* MongoDB product and cart data
+* CORS configuration for production frontend
+* API validation using Pydantic
 * Dockerized application
-* Swagger / OpenAPI documentation
-* Production deployment with Render
+* Production deployment on Render
+* Interactive Swagger API documentation
+
+---
 
 ## 🛠️ Tech Stack
 
-* **Python**
-* **FastAPI**
-* **SQLAlchemy**
-* **Pydantic**
-* **MySQL**
-* **MongoDB**
-* **PyMongo / Motor**
-* **JWT Authentication**
-* **Docker**
-* **Docker Compose**
-* **Uvicorn**
-* **Render**
+| Technology               | Purpose                |
+| ------------------------ | ---------------------- |
+| FastAPI                  | Backend REST API       |
+| Python                   | Backend development    |
+| MySQL                    | Users and orders       |
+| MongoDB                  | Products and cart data |
+| SQLAlchemy               | MySQL ORM              |
+| PyMongo / MongoDB Driver | MongoDB integration    |
+| Pydantic                 | Data validation        |
+| JWT                      | Authentication         |
+| Docker                   | Containerization       |
+| Render                   | Backend deployment     |
+| Vercel                   | Frontend deployment    |
+
+---
 
 ## 🏗️ Architecture
 
-The application uses a dual-database architecture.
+Cartify uses a **dual-database architecture**.
 
 ### MySQL
 
-MySQL is used for relational application data such as:
+Used for relational data such as:
 
 * Users
 * Orders
@@ -62,42 +69,60 @@ MySQL is used for relational application data such as:
 
 ### MongoDB
 
-MongoDB is used for document-oriented application data such as:
+Used for flexible e-commerce data such as:
 
 * Products
 * Shopping cart data
 
-This separation allows each database to handle the type of data it is designed for.
+This separation allows relational and document-based data to be handled according to their respective use cases.
+
+---
 
 ## 🔐 Authentication
 
-The backend provides authentication using JWT tokens.
+Cartify uses **JWT-based authentication**.
 
-### Signup
+### Authentication Flow
 
-```http
-POST /auth/signup
+```text
+User
+ │
+ ├── Signup
+ │
+ ▼
+FastAPI
+ │
+ ├── Validate User Data
+ ├── Create User
+ │
+ ▼
+MySQL
 ```
 
-Creates a new user account.
+For login:
 
-### Login
-
-```http
-POST /auth/login
+```text
+User Login
+    │
+    ▼
+FastAPI
+    │
+    ├── Validate Credentials
+    │
+    ▼
+JWT Token
+    │
+    ▼
+Authenticated Requests
 ```
 
-Authenticates the user using email and password and returns a JWT access token.
+Protected endpoints require the JWT token through the `Authorization` header.
 
-The token can then be used for authenticated API requests.
-
-Example:
-
-```http
-Authorization: Bearer <access_token>
-```
+---
 
 ## 📦 Product API
+
+Products are stored in MongoDB.
 
 ### Get Products
 
@@ -105,7 +130,7 @@ Authorization: Bearer <access_token>
 GET /products/
 ```
 
-Returns the available products.
+Returns the available product catalog.
 
 ### Create Product
 
@@ -113,9 +138,7 @@ Returns the available products.
 POST /products/
 ```
 
-Creates a new product.
-
-Example request:
+Example:
 
 ```json
 {
@@ -134,88 +157,130 @@ Example request:
 PUT /products/{product_id}
 ```
 
-Updates an existing product.
+### Product Data
 
-Supported product information includes:
+Products support:
 
 * Name
 * Description
 * Price
 * Category
 * Stock
-* Image
+* Image URL
+
+---
 
 ## 🛒 Cart & Order Flow
 
-The backend supports the complete shopping workflow:
+The application supports the complete shopping flow:
 
 ```text
-Product
-   ↓
-Add to Cart
-   ↓
-Cart Management
-   ↓
+Browse Products
+      ↓
+Add Product to Cart
+      ↓
+View Cart
+      ↓
 Checkout
-   ↓
+      ↓
 Place Order
+      ↓
+Order Created
 ```
 
-The frontend communicates with these backend APIs to provide the complete shopping experience.
+The frontend communicates with the backend through REST APIs during each stage.
+
+---
 
 ## 📚 API Documentation
 
-FastAPI automatically provides interactive Swagger documentation.
+FastAPI automatically provides interactive API documentation.
 
-**Swagger UI:**
+### Swagger UI
 
 https://cart-system-ylj0.onrender.com/docs
 
-The Swagger interface can be used to explore and test the available REST APIs.
+### OpenAPI
+
+https://cart-system-ylj0.onrender.com/openapi.json
+
+Swagger can be used to:
+
+* Explore API endpoints
+* View request schemas
+* Test endpoints
+* Test authentication
+* Inspect API responses
+
+---
 
 ## ⚙️ Local Setup
 
-### 1. Clone the repository
+### Clone Repository
 
 ```bash
 git clone https://github.com/ratneshbuilds03/fastapi-project-cart03.git
 cd fastapi-project-cart03
 ```
 
-### 2. Create a virtual environment
+### Create Virtual Environment
 
-Windows:
-
-```powershell
+```bash
 python -m venv venv
 ```
 
-Activate it:
+### Activate Virtual Environment
+
+Windows:
 
 ```powershell
 venv\Scripts\activate
 ```
 
-### 3. Install dependencies
+Linux / macOS:
+
+```bash
+source venv/bin/activate
+```
+
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure environment variables
+---
 
-Create a `.env` file in the project root.
+## 🔑 Environment Variables
+
+Create a `.env` file and configure the required environment variables.
 
 ```env
 DATABASE_URL=your_mysql_database_url
+
 MONGODB_URL=your_mongodb_connection_string
+
 MONGODB_DB=cart_db
+
 SECRET_KEY=your_secret_key
 ```
 
-Do not commit `.env` or any credentials to GitHub.
+### Environment Variable Description
 
-### 5. Run the application
+| Variable       | Description               |
+| -------------- | ------------------------- |
+| `DATABASE_URL` | MySQL database connection |
+| `MONGODB_URL`  | MongoDB connection string |
+| `MONGODB_DB`   | MongoDB database name     |
+| `SECRET_KEY`   | JWT signing secret        |
+
+> Never commit `.env` files or database credentials to GitHub.
+
+---
+
+## ▶️ Run Locally
+
+Start the FastAPI development server:
 
 ```bash
 uvicorn app.main:app --reload
@@ -233,52 +298,64 @@ Swagger documentation:
 http://127.0.0.1:8000/docs
 ```
 
-## 🐳 Docker Setup
+---
 
-The backend is Dockerized for consistent development and deployment.
+## 🐳 Docker
 
-Build and start the application using:
+The backend is Dockerized for consistent deployment.
+
+### Build Image
 
 ```bash
-docker compose up --build
+docker build -t cart-system .
 ```
 
-The Docker setup can be used to run the backend together with its required database services according to the project configuration.
+### Run Container
 
-## 🔑 Environment Variables
+```bash
+docker run -p 8000:8000 cart-system
+```
 
-| Variable       | Description                            |
-| -------------- | -------------------------------------- |
-| `DATABASE_URL` | MySQL database connection URL          |
-| `MONGODB_URL`  | MongoDB connection string              |
-| `MONGODB_DB`   | MongoDB database name                  |
-| `SECRET_KEY`   | Secret key used for JWT authentication |
+For local development, the project can also be used with Docker Compose when the required database services are configured.
 
-**Never commit real credentials, passwords, connection strings, or secret keys to GitHub.**
+---
 
-## 🌐 Deployment
+## 🌐 Production Deployment
 
 The backend is deployed using **Render**.
 
-**Production API:**
+### Production API
 
 https://cart-system-ylj0.onrender.com
 
-**Swagger:**
+### Health Check
 
-https://cart-system-ylj0.onrender.com/docs
+```http
+GET /health
+```
 
-The frontend is deployed separately on Vercel and communicates with this backend through the configured API URL.
+The production deployment connects to:
+
+* Aiven MySQL
+* MongoDB Atlas
+
+The application is containerized using Docker before deployment.
+
+---
 
 ## 🔗 Frontend
 
-Cartify frontend:
+Cartify's frontend is deployed separately using Vercel.
 
+**Frontend:**
 https://cartify-pi-nine.vercel.app/
 
-Frontend repository:
-
+**Frontend Repository:**
 https://github.com/ratneshbuilds03/cartify-frontend-2s
+
+The backend is configured with CORS to allow the production frontend to communicate with the API.
+
+---
 
 ## 📁 Project Structure
 
@@ -286,62 +363,107 @@ https://github.com/ratneshbuilds03/cartify-frontend-2s
 fastapi-project-cart03/
 │
 ├── app/
+│   ├── main.py
+│   ├── models/
 │   ├── routes/
 │   ├── schemas/
 │   ├── services/
-│   ├── models/
-│   ├── utils/
-│   ├── database.py
-│   └── main.py
+│   └── database/
 │
 ├── tests/
-├── Dockerfile
+│
+├── dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-├── .gitignore
+├── .env
 └── README.md
 ```
+
+---
 
 ## 🔄 Application Flow
 
 ```text
-Client
-  │
-  ▼
-FastAPI REST API
-  │
-  ├── Authentication
-  │      └── JWT
-  │
-  ├── Products
-  │      └── MongoDB
-  │
-  ├── Cart
-  │      └── MongoDB
-  │
-  └── Orders / Users
-         └── MySQL
+                ┌─────────────────────┐
+                │   Cartify Frontend  │
+                │       Vercel        │
+                └──────────┬──────────┘
+                           │
+                           │ REST API
+                           ▼
+                ┌─────────────────────┐
+                │    FastAPI Backend  │
+                │       Render        │
+                └──────────┬──────────┘
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+              ▼                         ▼
+       ┌─────────────┐           ┌─────────────┐
+       │    MySQL    │           │   MongoDB   │
+       │    Aiven    │           │    Atlas    │
+       └─────────────┘           └─────────────┘
 ```
+
+---
 
 ## 🧪 Testing
 
 The project includes backend tests for important application functionality.
 
-Run the test suite with:
+Testing can be executed using:
 
 ```bash
 pytest
 ```
 
+The test suite covers areas such as:
+
+* Authentication
+* Products
+* Cart functionality
+* Orders
+* API behavior
+
+---
+
+## 🔒 Security
+
+Security-related implementation includes:
+
+* JWT authentication
+* Password hashing
+* Protected endpoints
+* Pydantic request validation
+* CORS configuration
+* Environment-based secrets
+* Database credentials kept outside source code
+
+Production credentials and secrets should never be committed to the repository.
+
+---
+
 ## 🔮 Future Improvements
 
+Potential future improvements include:
+
 * Payment gateway integration
-* Product search and filtering
-* Order history APIs
 * Admin dashboard
+* Product search and filtering
 * Product reviews and ratings
-* Advanced inventory management
-* Automated CI/CD pipeline improvements
+* Order history interface
+* Inventory management
+* Improved user account management
+* Email/order notifications
+
+---
+
+## 🔗 Repository
+
+**GitHub:**
+https://github.com/ratneshbuilds03/fastapi-project-cart03
+
+---
 
 ## 📄 License
 

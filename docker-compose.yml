@@ -11,6 +11,7 @@ services:
 
     volumes:
       - .:/app
+      - ./secrets/aiven-ca.pem:/etc/secrets/aiven-ca.pem:ro
   mysql:
     image: mysql:8.0
     env_file:

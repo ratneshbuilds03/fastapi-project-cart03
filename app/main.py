@@ -59,6 +59,7 @@ async def healt_check():
 app = CORSMiddleware(
     app=app,
     allow_origins=["https://cartify-pi-nine.vercel.app","http://localhost:3000","http://localhost:8000","http://127.0.0.1:8000"],
+    allow_origin_regex=r"^https://cartify-[a-z0-9-]+-ratneshbuilds357-2242s-projects\.vercel\.app$",
     allow_credentials=True,
     allow_methods=["GET","POST","PUT","DELETE"],
     allow_headers=["Authorization","Content-Type"],
